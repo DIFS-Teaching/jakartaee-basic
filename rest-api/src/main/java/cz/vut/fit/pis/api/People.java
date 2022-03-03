@@ -3,8 +3,7 @@ package cz.vut.fit.pis.api;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
-import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.naming.NamingException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -26,11 +25,10 @@ import cz.vut.fit.pis.service.PersonManager;
  * TEST URL:
  * http://localhost:8080/jsf-basic/rest/people/list
  */
-@Stateless
 @Path("/people")
 public class People 
 {
-	@EJB
+	@Inject
 	private PersonManager personMgr; 
     @Context
     private UriInfo context;

@@ -5,8 +5,7 @@ package cz.vut.fit.pis.api;
 
 import java.util.List;
 
-import javax.ejb.EJB;
-import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.naming.NamingException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -20,11 +19,10 @@ import javax.ws.rs.core.UriInfo;
 import cz.vut.fit.pis.data.Car;
 import cz.vut.fit.pis.service.CarManager;
 
-@Stateless
 @Path("/cars")
 public class Cars 
 {
-	@EJB
+	@Inject
 	private CarManager carMgr;
     @Context
     private UriInfo context;

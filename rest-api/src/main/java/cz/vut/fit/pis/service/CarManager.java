@@ -1,7 +1,7 @@
 package cz.vut.fit.pis.service;
 import java.util.List;
 
-import javax.ejb.Stateless;
+import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -13,7 +13,7 @@ import cz.vut.fit.pis.data.Car;
  * @author burgetr
  *
  */
-@Stateless
+@ApplicationScoped
 public class CarManager 
 {
     @PersistenceContext
