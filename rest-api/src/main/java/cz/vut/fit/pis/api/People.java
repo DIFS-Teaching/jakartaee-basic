@@ -18,6 +18,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
+import cz.vut.fit.pis.data.ErrorDTO;
 import cz.vut.fit.pis.data.Person;
 import cz.vut.fit.pis.service.PersonManager;
 
@@ -63,7 +64,7 @@ public class People
     	if (p != null)
     		return Response.ok(p).build();
     	else
-    		return Response.status(Status.NOT_FOUND).entity("{\"error\": \"No such person\"}").build();
+    		return Response.status(Status.NOT_FOUND).entity(new ErrorDTO("not found")).build();
     }
 
     @PUT
@@ -71,7 +72,7 @@ public class People
     @Produces(MediaType.TEXT_PLAIN)
     public Response putJson(List<Person> content) 
     {
-    	return Response.status(Response.Status.NOT_IMPLEMENTED).entity("This is not available now").build();
+    	return Response.status(Response.Status.NOT_IMPLEMENTED).entity(new ErrorDTO("Not implemented")).build();
     }
     
     @POST

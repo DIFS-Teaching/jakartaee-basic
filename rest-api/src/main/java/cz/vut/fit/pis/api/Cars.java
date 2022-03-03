@@ -43,7 +43,7 @@ public class Cars
     }
 
     /**
-     * PUT method for updating or creating an instance of People
+     * PUT method for updating or creating an instance of Car
      * @param content representation for the resource
      * @return an HTTP response with content of the updated or created resource.
      */
