@@ -33,17 +33,34 @@
             <type>pom</type>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.derby</groupId>
+            <artifactId>derby</artifactId>
+            <version>10.14.2.0</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
     
     <build>
         <plugins>
+			<plugin>
+			    <groupId>org.apache.maven.plugins</groupId>
+			    <artifactId>maven-war-plugin</artifactId>
+			    <version>3.3.1</version>
+			</plugin>
             <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.2</version>
-            </plugin>
-            <plugin>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.22.2</version>
+                <groupId>io.openliberty.tools</groupId>
+                <artifactId>liberty-maven-plugin</artifactId>
+                <version>3.7.1</version>
+                <configuration>
+                    <copyDependencies>
+                        <location>${project.build.directory}/liberty/wlp/usr/shared/resources</location>
+                        <dependency>
+                            <groupId>org.apache.derby</groupId>
+                            <artifactId>derby</artifactId>
+                        </dependency>
+                    </copyDependencies>
+                </configuration>
             </plugin>
         </plugins>        
         <finalName>web-frontend</finalName>

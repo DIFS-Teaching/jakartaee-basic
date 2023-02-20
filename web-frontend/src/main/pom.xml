@@ -7,10 +7,10 @@
 	    <groupId>cz.vut.fit.pis</groupId>
 	    <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>rest-api</artifactId>
+    <artifactId>web-frontend</artifactId>
     <packaging>war</packaging>
     
-    <name>Jakarta EE REST API Demo</name>
+    <name>Jakarta EE JSF Frontend Demo</name>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
@@ -63,7 +63,7 @@
                 </configuration>
             </plugin>
         </plugins>        
-        <finalName>rest-api</finalName>
+        <finalName>web-frontend</finalName>
     </build>
     
 </project>
