@@ -47,7 +47,7 @@
     </library>
 
     <!-- Datasource Configuration -->
-    <dataSource id="derbyjpadatasource" jndiName="jdbc/derby">
+    <dataSource id="derbyjpadatasource" jndiName="jdbc/demo">
         <jdbcDriver libraryRef="derbyJDBCLib" />
         <properties.derby.embedded databaseName="DemoDB" createDatabase="create" />
     </dataSource>
