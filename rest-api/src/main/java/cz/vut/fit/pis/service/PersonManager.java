@@ -46,7 +46,7 @@ public class PersonManager
     
     public List<Person> findAll()
     {
-    	return em.createQuery("SELECT p FROM Person p", Person.class).getResultList();
+    	return em.createNamedQuery("Person.findAll", Person.class).getResultList();
     }
 
 }

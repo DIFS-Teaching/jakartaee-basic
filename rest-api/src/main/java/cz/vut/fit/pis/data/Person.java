@@ -9,6 +9,8 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
@@ -17,6 +19,11 @@ import jakarta.persistence.TemporalType;
 
 @Entity
 @Table(name = "Person")
+@NamedQueries({
+    @NamedQuery(name="Person.findAll", query="SELECT p FROM Person p"),
+    @NamedQuery(name="Person.findByName",
+                query="SELECT p FROM Person p WHERE p.name = :name")
+})
 public class Person
 {
     @Id
