@@ -1,8 +1,8 @@
 package cz.vut.fit.pis.data;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Vector;
 
 import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.CascadeType;
@@ -39,7 +39,7 @@ public class Person
 
     public Person()
     {
-        cars = new Vector<Car>();
+        cars = new ArrayList<>();
     }
     
     public Collection<Car> getCars()

@@ -19,7 +19,7 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 import jakarta.ws.rs.core.UriBuilder;
 import jakarta.ws.rs.core.UriInfo;
-
+import cz.vut.fit.pis.data.Car;
 import cz.vut.fit.pis.data.ErrorDTO;
 import cz.vut.fit.pis.data.Person;
 import cz.vut.fit.pis.service.PersonManager;
@@ -48,7 +48,6 @@ public class People
     {
     }
     
-    @Path("/list")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Person> getPeople() 
@@ -143,6 +142,33 @@ public class People
     		return Response.status(Status.NOT_FOUND).entity(new ErrorDTO("not found")).build();
     }
     
-    
+    @Path("/{id}/cars")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getCarsForPerson(@PathParam("id") Long id) 
+    {
+    	Person p = personMgr.find(id);
+    	if (p != null)
+    		return Response.ok(p.getCars()).build();
+    	else
+    		return Response.status(Status.NOT_FOUND).entity(new ErrorDTO("not found")).build();
+    }
+   
+    @Path("/{id}/cars")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addCarToPerson(@PathParam("id") Long personId, Car car) 
+    {
+    	Person p = personMgr.find(personId);
+    	if (p != null)
+    	{
+    		personMgr.addCar(p, car);
+    		return Response.ok(p.getCars()).build();
+    	}
+    	else
+    		return Response.status(Status.NOT_FOUND).entity(new ErrorDTO("not found")).build();
+    }
+   
 
 }

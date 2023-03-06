@@ -31,9 +31,9 @@ public class CarManager
     	return ret;
     }
     
-    public void save(Car p)
+    public Car save(Car p)
     {
-    	em.merge(p);
+    	return em.merge(p);
     }
 	
     public void remove(Car p)

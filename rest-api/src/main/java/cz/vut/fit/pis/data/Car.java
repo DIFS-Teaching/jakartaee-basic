@@ -1,6 +1,5 @@
 package cz.vut.fit.pis.data;
 
-import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -17,7 +16,6 @@ public class Car
 	private String type;
 	
 	@ManyToOne(fetch=FetchType.EAGER)
-	@JsonbTransient
     private Person owner;
 	
 	public Car()
