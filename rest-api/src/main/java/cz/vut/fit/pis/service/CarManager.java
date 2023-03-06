@@ -1,7 +1,7 @@
 package cz.vut.fit.pis.service;
 import java.util.List;
 
-import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
@@ -13,7 +13,7 @@ import cz.vut.fit.pis.data.Car;
  * @author burgetr
  *
  */
-@ApplicationScoped
+@RequestScoped
 public class CarManager 
 {
     @PersistenceContext

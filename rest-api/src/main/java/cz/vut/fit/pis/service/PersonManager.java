@@ -5,7 +5,7 @@ package cz.vut.fit.pis.service;
 
 import java.util.List;
 
-import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
@@ -17,7 +17,7 @@ import cz.vut.fit.pis.data.Person;
  * Person manager EJB
  * @author burgetr
  */
-@ApplicationScoped
+@RequestScoped
 public class PersonManager 
 {
     @PersistenceContext
