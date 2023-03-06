@@ -28,9 +28,9 @@ public class PersonManager
     }
     
     @Transactional
-    public void save(Person p)
+    public Person save(Person p)
     {
-    	em.merge(p);
+    	return em.merge(p);
     }
 	
     @Transactional
