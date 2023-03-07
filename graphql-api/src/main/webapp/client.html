@@ -72,34 +72,48 @@ function loadPeople(tab)
 		      		tab.append('<tr><td>'+data[i].name+'</td><td>'+data[i].surname+'</td><td>'+data[i].born+'</td></tr>');
                 }
 	    });
-    
+}
+
+function addPerson(person) 
+{
+    let mutation = `mutation AddPerson($person: PersonInput) {
+                        updatePerson(p: $person) {
+                            id
+                        }
+                    }`;
+
+    let postData = {
+        query: mutation,
+        variables: { person: person }
+    };
+
+    $.ajax({
+        type: "POST",
+        url: baseUrl,
+        contentType: "application/json",
+        data: JSON.stringify(postData)
+    }).success(function() {
+      alert('OK!')
+    }).error(function(msg) {
+      alert('Error: ' + msg);
+    });
 }
 
 $(function() {
     $('#reload').click(function() {
-    	var tab = $('#result');
+    	  var tab = $('#result');
         loadPeople(tab);
     });
     $('#editform').submit(function() {
-    	var data = {
+    	var personData = {
     		id: Number($('#fid').val()),
     		name: $('#fname').val(),
     		surname: $('#fsurname').val(),
     		born: $('#fborn').val()
     	};
-    	console.log(data);
+    	console.log(personData);
     	
-    	$.ajax({
-    	    type: "POST",
-    	    url: baseUrl,
-    	    contentType: "application/json",
-    	    data: JSON.stringify(data)
-    	}).success(function() {
-    		alert('OK!')
-    	}).error(function(msg) {
-    		alert('Error: ' + msg);
-    	});
-    	
+      addPerson(personData);
     	return false;
     });
 });
