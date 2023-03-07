@@ -42,6 +42,7 @@
     <!-- Default SSL configuration enables trust for default certificates from the Java runtime -->
     <ssl id="defaultSSLConfig" trustDefaultCerts="true" />
     
+    
     <!-- Derby Library Configuration -->
     <library id="derbyJDBCLib">
 	    <fileset dir="${shared.resource.dir}/" includes="derby*.jar" />

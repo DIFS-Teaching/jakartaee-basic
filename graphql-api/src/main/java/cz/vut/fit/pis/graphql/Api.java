@@ -5,6 +5,7 @@ package cz.vut.fit.pis.graphql;
 
 import java.util.List;
 
+import org.eclipse.microprofile.auth.LoginConfig;
 import org.eclipse.microprofile.graphql.Description;
 import org.eclipse.microprofile.graphql.GraphQLApi;
 import org.eclipse.microprofile.graphql.GraphQLException;
@@ -16,6 +17,7 @@ import cz.vut.fit.pis.data.Car;
 import cz.vut.fit.pis.data.Person;
 import cz.vut.fit.pis.service.CarManager;
 import cz.vut.fit.pis.service.PersonManager;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 
@@ -26,6 +28,7 @@ import jakarta.inject.Inject;
  * @author burgetr
  */
 @GraphQLApi
+@LoginConfig(authMethod = "MP-JWT", realmName = "MP-JWT")
 @RequestScoped
 public class Api
 {
@@ -35,6 +38,7 @@ public class Api
 	private CarManager carMgr; 
 
 	@Query
+	@RolesAllowed("admin")
 	@Description("Gets the complete list of people")
 	public List<Person> getPeople()
 	{
