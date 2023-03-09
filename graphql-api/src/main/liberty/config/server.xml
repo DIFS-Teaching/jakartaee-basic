@@ -37,7 +37,7 @@
     <applicationManager autoExpand="true"/>
 
     <!-- Configures the application on a specified context root -->
-    <webApplication contextRoot="/rest-api" location="rest-api.war" />
+    <webApplication contextRoot="/graphql-api" location="graphql-api.war" />
 
     <!-- Default SSL configuration enables trust for default certificates from the Java runtime -->
     <ssl id="defaultSSLConfig" trustDefaultCerts="true" />
