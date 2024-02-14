@@ -12,8 +12,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.UriInfo;
-
-import cz.vut.fit.pis.data.Car;
+import cz.vut.fit.pis.api.dto.CarDTO;
 import cz.vut.fit.pis.service.CarManager;
 
 @Path("/cars")
@@ -33,9 +32,9 @@ public class Cars
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Car> getCars() 
+    public List<CarDTO> getCars() 
     {
-    	return carMgr.findAll();
+    	return carMgr.findAll().stream().map(car -> new CarDTO(car)).toList();
     }
 
 }

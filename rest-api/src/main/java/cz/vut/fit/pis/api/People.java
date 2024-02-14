@@ -19,8 +19,10 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 import jakarta.ws.rs.core.UriBuilder;
 import jakarta.ws.rs.core.UriInfo;
+import cz.vut.fit.pis.api.dto.CarDTO;
+import cz.vut.fit.pis.api.dto.ErrorDTO;
+import cz.vut.fit.pis.api.dto.PersonDTO;
 import cz.vut.fit.pis.data.Car;
-import cz.vut.fit.pis.data.ErrorDTO;
 import cz.vut.fit.pis.data.Person;
 import cz.vut.fit.pis.service.PersonManager;
 
@@ -36,9 +38,6 @@ public class People
     @Context
     private UriInfo context;
 
-    /**
-     * Default constructor. 
-     */
     public People() 
     {
     }
@@ -50,9 +49,9 @@ public class People
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Person> getPeople() 
+    public List<PersonDTO> getPeople() 
     {
-    	return personMgr.findAll();
+    	return personMgr.findAll().stream().map(p -> new PersonDTO(p)).toList();
     }
 
     @Path("/{id}")
@@ -62,7 +61,7 @@ public class People
     {
     	Person p = personMgr.find(id);
     	if (p != null)
-    		return Response.ok(p).build();
+    		return Response.ok(new PersonDTO(p)).build();
     	else
     		return Response.status(Status.NOT_FOUND).entity(new ErrorDTO("not found")).build();
     }
@@ -85,7 +84,7 @@ public class People
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updatePersonSingle(@PathParam("id") Long id, Person src) 
+    public Response updatePersonSingle(@PathParam("id") Long id, PersonDTO src) 
     {
     	Person p = personMgr.find(id);
     	if (p != null)
@@ -107,12 +106,18 @@ public class People
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addPerson(Person person)
+    public Response addPerson(PersonDTO person)
     {
     	Person existing = personMgr.find(person.getId());
     	if (existing == null)
     	{
-	    	Person savedPerson = personMgr.save(person);
+    	    Person p = new Person();
+    	    p.setId(person.getId());
+    	    p.setName(person.getName());
+    	    p.setSurname(person.getSurname());
+    	    p.setBorn(person.getBorn());
+    	    
+	    	Person savedPerson = personMgr.save(p);
 	    	final URI uri = UriBuilder.fromPath("/people/{resourceServerId}").build(savedPerson.getId());
 	    	return Response.created(uri).entity(savedPerson).build();
     	}
@@ -158,13 +163,20 @@ public class People
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addCarToPerson(@PathParam("id") Long personId, Car car) 
+    public Response addCarToPerson(@PathParam("id") Long personId, CarDTO car) 
     {
     	Person p = personMgr.find(personId);
     	if (p != null)
     	{
-    		personMgr.addCar(p, car);
-    		return Response.ok(p.getCars()).build();
+    	    Car newCar = new Car();
+    	    newCar.setReg(car.getReg());
+    	    newCar.setProd(car.getProd());
+    	    newCar.setType(car.getType());
+  	        	    
+    		personMgr.addCar(p, newCar);
+    		// return the list of all cars for the person
+    		List<CarDTO> allCars = p.getCars().stream().map(c -> new CarDTO(c)).toList();
+    		return Response.ok(allCars).build();
     	}
     	else
     		return Response.status(Status.NOT_FOUND).entity(new ErrorDTO("not found")).build();

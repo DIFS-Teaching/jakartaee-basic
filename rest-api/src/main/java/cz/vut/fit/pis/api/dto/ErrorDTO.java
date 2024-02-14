@@ -3,7 +3,7 @@
  *
  * Created on 3. 3. 2022, 13:12:52 by burgetr
  */
-package cz.vut.fit.pis.data;
+package cz.vut.fit.pis.api.dto;
 
 /**
  * 
