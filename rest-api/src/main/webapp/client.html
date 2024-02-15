@@ -46,7 +46,7 @@ var baseUrl = location.protocol + '//' + location.host + '/rest-api/rest/people'
 
 function loadPeople(tab)
 {
-    var url = baseUrl + '/list';
+    var url = baseUrl + '/';
     //console.log(url);
     jQuery.getJSON(url,
 	      function (data) {
