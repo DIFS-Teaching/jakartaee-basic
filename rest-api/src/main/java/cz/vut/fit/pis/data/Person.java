@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
-import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -31,10 +30,8 @@ public class Person
 	private String name;
     private String surname;
     @Temporal(TemporalType.DATE)
-    //@JsonbDateFormat("yyyy-MM-dd z")
     private Date born;
     @OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER, mappedBy = "owner", orphanRemoval = true)
-    @JsonbTransient
 	private Collection<Car> cars;
 
     public Person()

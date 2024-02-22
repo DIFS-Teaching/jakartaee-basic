@@ -1,6 +1,8 @@
 package cz.vut.fit.pis.api;
 
 import java.net.URI;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 import jakarta.annotation.PostConstruct;
@@ -91,7 +93,9 @@ public class People
     	{
     		p.setName(src.getName());
     		p.setSurname(src.getSurname());
-    		p.setBorn(src.getBorn());
+            p.setBorn(Date.from(src.getBorn().atStartOfDay()
+                    .atZone(ZoneId.systemDefault())
+                    .toInstant()));
     		return Response.ok(p).build();
     	}
     	else
@@ -115,7 +119,9 @@ public class People
     	    p.setId(person.getId());
     	    p.setName(person.getName());
     	    p.setSurname(person.getSurname());
-    	    p.setBorn(person.getBorn());
+    	    p.setBorn(Date.from(person.getBorn().atStartOfDay()
+    	            .atZone(ZoneId.systemDefault())
+    	            .toInstant()));
     	    
 	    	Person savedPerson = personMgr.save(p);
 	    	final URI uri = UriBuilder.fromPath("/people/{resourceServerId}").build(savedPerson.getId());

@@ -1,6 +1,7 @@
 package cz.vut.fit.pis.api.dto;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 import cz.vut.fit.pis.data.Person;
 
@@ -10,7 +11,7 @@ public class PersonDTO
     private long id;
 	private String name;
     private String surname;
-    private Date born;
+    private LocalDate born;
 
     public PersonDTO()
     {
@@ -21,7 +22,8 @@ public class PersonDTO
         this.id = person.getId();
         this.name = person.getName();
         this.surname = person.getSurname();
-        this.born = person.getBorn();
+        // date is converted to local date
+        this.born = person.getBorn().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     }
 
     public long getId()
@@ -54,12 +56,12 @@ public class PersonDTO
         this.surname = surname;
     }
 
-    public Date getBorn()
+    public LocalDate getBorn()
     {
         return born;
     }
 
-    public void setBorn(Date born)
+    public void setBorn(LocalDate born)
     {
         this.born = born;
     }
