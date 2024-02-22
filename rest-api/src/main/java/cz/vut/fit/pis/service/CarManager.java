@@ -10,8 +10,9 @@ import cz.vut.fit.pis.data.Car;
 
 
 /**
+ * Car manager service (business logic).
+ * 
  * @author burgetr
- *
  */
 @RequestScoped
 public class CarManager 

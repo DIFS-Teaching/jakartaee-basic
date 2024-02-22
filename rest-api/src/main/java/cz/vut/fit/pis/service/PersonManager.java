@@ -14,7 +14,7 @@ import cz.vut.fit.pis.data.Person;
 
 
 /**
- * Person manager EJB
+ * Person manager service (business logic).
  * @author burgetr
  */
 @RequestScoped
