@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import org.eclipse.microprofile.graphql.Description;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -23,6 +25,7 @@ import jakarta.persistence.TemporalType;
     @NamedQuery(name="Person.findByName",
                 query="SELECT p FROM Person p WHERE p.name = :name")
 })
+@Description("Person data including cars")
 public class Person
 {
     @Id
@@ -30,7 +33,6 @@ public class Person
 	private String name;
     private String surname;
     @Temporal(TemporalType.DATE)
-    //@JsonbDateFormat("yyyy-MM-dd z")
     private Date born;
     @OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER, mappedBy = "owner", orphanRemoval = true)
 	private Collection<Car> cars;

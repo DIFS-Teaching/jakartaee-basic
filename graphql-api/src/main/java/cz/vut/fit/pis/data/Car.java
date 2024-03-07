@@ -1,5 +1,7 @@
 package cz.vut.fit.pis.data;
 
+import org.eclipse.microprofile.graphql.Description;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -8,6 +10,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "Car")
+@Description("Car data including the owner")
 public class Car
 {
     @Id

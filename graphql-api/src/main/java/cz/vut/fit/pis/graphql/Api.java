@@ -55,6 +55,7 @@ public class Api
 		return personMgr.find(id);
 	}
 	
+	@Description("The number of cars for a person")
 	public Integer getCarCount(@Source Person p)
 	{
 		return p.getCars().size();
