@@ -1,6 +1,6 @@
 # web-frontend
 
-(c) Radek Burget, 2021-2023
+(c) Radek Burget, 2021-2025
 
 A sample Jakarta EE project demonstrating its basic concepts:
 

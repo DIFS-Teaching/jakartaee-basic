@@ -1,6 +1,6 @@
 # rest-api
 
-(c) Radek Burget, 2022-2024
+(c) Radek Burget, 2022-2025
 
 A sample Jakarta EE project demonstrating its basic concepts:
 
