@@ -45,11 +45,19 @@
     <library id="derbyJDBCLib">
 	    <fileset dir="${shared.resource.dir}/" includes="derby*.jar" />
     </library>
+    <!-- Mysql Library Configuration -->
+    <library id="mysqlJDBCLib">
+        <fileset dir="${shared.resource.dir}/" includes="mysql*.jar"/>
+    </library>
 
     <!-- Datasource Configuration -->
     <dataSource id="derbyjpadatasource" jndiName="jdbc/demo">
         <jdbcDriver libraryRef="derbyJDBCLib" />
         <properties.derby.embedded databaseName="DemoDB" createDatabase="create" />
     </dataSource>
+    <!-- <dataSource id="mysqldatasource" jndiName="jdbc/demo">
+        <jdbcDriver libraryRef="mysqlJDBCLib"/>
+        <properties databaseName="jeedemo" password="demo" portNumber="3306" serverName="localhost" user="demo" />
+    </dataSource> -->   
     
 </server>
