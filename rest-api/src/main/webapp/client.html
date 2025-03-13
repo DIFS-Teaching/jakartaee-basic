@@ -31,7 +31,7 @@
 
 <table id="list">
 	<thead>
-		<tr><th>Name</th><th>Surname</th><th>Born</th></tr>
+		<tr><th>ID</th><th>Name</th><th>Surname</th><th>Born</th></tr>
 	</thead>
 	<tbody id="data">
 		<!-- to be filled using AJAX -->
@@ -40,6 +40,8 @@
 
 <h2>Add person</h2>
 <form action="#" method="post" id="addForm">
+	<label for="ID">ID</label>
+	<input type="text" name="ID" id="ID"><br>
 	<label for="name">Name</label>
 	<input type="text" name="name" id="name"><br>
 	<label for="surname">Surname</label>
@@ -62,6 +64,7 @@
 		for (var i = 0; i < data.length; i++)
 		{
 			var row = "";
+			row += '<td>' + data[i].id + '</td>';
 			row += '<td>' + data[i].name + '</td>';
 			row += '<td>' + data[i].surname + '</td>';
 			row += '<td>' + data[i].born + '</td>';
@@ -89,6 +92,7 @@
 		document.getElementById('addForm').onsubmit = function(event) {
 			event.preventDefault();
 			const person = {
+				id: document.getElementById('ID').value,
 				name: document.getElementById('name').value,
 				surname: document.getElementById('surname').value,
 				born: document.getElementById('fborn').value

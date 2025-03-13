@@ -31,7 +31,7 @@
 
 <table id="list">
 	<thead>
-		<tr><th>Name</th><th>Surname</th><th>Born</th></tr>
+		<tr><th>ID</th><th>Name</th><th>Surname</th><th>Born</th></tr>
 	</thead>
 	<tbody id="data">
 		<!-- to be filled using AJAX -->
@@ -92,6 +92,7 @@
 		for (var i = 0; i < data.length; i++)
 		{
 			var row = "";
+			row += '<td>' + data[i].id + '</td>';
 			row += '<td>' + data[i].name + '</td>';
 			row += '<td>' + data[i].surname + '</td>';
 			row += '<td>' + data[i].born + '</td>';
