@@ -1,124 +1,140 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>AJAX client</title>
-  <meta charset="utf-8">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-  <style>
-  body {
-    font-family: sans-serif;
-  }
-  th {
-    text-align: left;
-    background-color: #aaf;
-  }
-  td {
-    background-color: #ffa;
-  }
-  </style>
+	<meta charset="UTF-8">
+	<meta name="author" content="Radek Burget burgetr@fit.vutbr.cz">
+	<meta name="description" content="A simple GraphQL client using pure JS">
+	<title>JavaScript GraphQL Client</title>
+	<style type="text/css">
+		  body {
+		    font-family: sans-serif;
+		  }
+		  th, td {
+		  	padding: 0.3em 0.5em;
+		  }
+		  th {
+		    text-align: left;
+		    background-color: #aaf;
+		  }
+		  td {
+		    background-color: #eee;
+		  }
+	</style>
 </head>
 <body>
-<h1>List of people</h1>
-<form id="reloadform">
-    <input id="reload" type="button" value="Reload">
+
+<h1>People</h1>
+
+<form>
+	<input type="button" value="Reload" id="reloadButton">
 </form>
 
-<table>
-  <thead>
-    <tr><th>Name</th><th>Surname</th><th>Born</th></tr>
-  </thead>
-  <tbody id="result">
-  </tbody>
+<table id="list">
+	<thead>
+		<tr><th>Name</th><th>Surname</th><th>Born</th></tr>
+	</thead>
+	<tbody id="data">
+		<!-- to be filled using AJAX -->
+	</tbody>
 </table>
 
-<h2>Add or edit</h2>
-<form id="editform">
-<label for="fid">ID</label> <input type="text" id="fid"><br>
-<label for="fname">Name</label> <input type="text" id="fname"><br>
-<label for="fsurname">Surname</label> <input type="text" id="fsurname"><br>
-<label for="fborn">Born</label> <input type="text" id="fborn"><br>
-<input type="submit" value="Save">
+<h2>Add person</h2>
+<form action="#" method="post" id="addForm">
+	<label for="ID">ID</label>
+	<input type="text" name="ID" id="ID"><br>
+	<label for="name">Name</label>
+	<input type="text" name="name" id="name"><br>
+	<label for="surname">Surname</label>
+	<input type="text" name="surname" id="surname"><br>
+	<label for="fborn">Born</label>
+	<input type="text" id="fborn"><br>
+	
+	<input type="submit" value="Submit" id="submitButton">
 </form>
 
-
 <script type="text/javascript">
-var baseUrl = location.protocol + '//' + location.host + '/graphql-api/graphql';
+	var baseUrl = location.protocol + '//' + location.host + '/graphql-api/graphql';
 
-function loadPeople(tab)
-{
-    let url = baseUrl;
-    let query = `{people {
-        id,
-        name,
-        surname,
-        born,
-        carCount,
-        cars {
-            reg
-        }
-    }}`;
-    
-    let queryObject = { query: query };
-    // queryObject.variables = {};
-    
-    jQuery.ajax(url, {
-    	 data: JSON.stringify(queryObject),
-    	 method: 'POST',
-    	 contentType : 'application/json'
-    }).done(function (rdata) {
-    			let data = rdata.data.people;
-		  		tab.empty();
-		  		for (var i = 0; i < data.length; i++) {
-		      		tab.append('<tr><td>'+data[i].name+'</td><td>'+data[i].surname+'</td><td>'+data[i].born+'</td></tr>');
-                }
-	    });
-}
+	async function sendGraphQL(query, variables) {
+		let queryObject = { query: query };
+		if (variables) {
+			queryObject.variables = variables;
+		}
 
-function addPerson(person) 
-{
-    let mutation = `mutation AddPerson($person: PersonInput) {
-                        updatePerson(p: $person) {
-                            id
-                        }
-                    }`;
+		let response = await fetch(baseUrl, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(queryObject)
+		});
+		const data = await response.json();
+		return data;
+	}
 
-    let postData = {
-        query: mutation,
-        variables: { person: person }
-    };
+	async function loadPeople(tab)
+	{
+		const query = `
+			{people {
+			    id,
+			    name,
+			    surname,
+			    born,
+			    carCount,
+			    cars {
+			        reg
+			    }
+			}}
+		`;
+		const resp = await sendGraphQL(query);
+		console.log(resp);
+		const data = resp.data.people;
 
-    $.ajax({
-        type: "POST",
-        url: baseUrl,
-        contentType: "application/json",
-        data: JSON.stringify(postData)
-    }).success(function() {
-      alert('OK!')
-    }).error(function(msg) {
-      alert('Error: ' + msg);
-    });
-}
+		let tabHTML = "";
+		for (var i = 0; i < data.length; i++)
+		{
+			var row = "";
+			row += '<td>' + data[i].name + '</td>';
+			row += '<td>' + data[i].surname + '</td>';
+			row += '<td>' + data[i].born + '</td>';
+			tabHTML += '<tr>' + row + '</tr>';
+		}
+		tab.innerHTML = tabHTML;
+	}
 
-$(function() {
-    $('#reload').click(function() {
-    	  var tab = $('#result');
-        loadPeople(tab);
-    });
-    $('#editform').submit(function() {
-    	var personData = {
-    		id: Number($('#fid').val()),
-    		name: $('#fname').val(),
-    		surname: $('#fsurname').val(),
-    		born: $('#fborn').val()
-    	};
-    	console.log(personData);
-    	
-      addPerson(personData);
-    	return false;
-    });
-});
+	async function addPerson(person)
+	{
+		const query = `
+				mutation AddPerson($person: PersonDTOInput) {
+					updatePerson(src: $person) {
+						id
+					}
+				}
+			`;
+		const variables = { person: person };
+		const resp = await sendGraphQL(query, variables);
+		loadPeople(document.getElementById('data'));
+	}
 
-</script>
+	window.onload = function() {
+		document.getElementById('reloadButton').onclick = function() {
+			let tab = document.getElementById('data');
+			loadPeople(tab);
+			return false;
+		}
+		document.getElementById('addForm').onsubmit = function(event) {
+			event.preventDefault();
+			const person = {
+				id: document.getElementById('ID').value,
+				name: document.getElementById('name').value,
+				surname: document.getElementById('surname').value,
+				born: document.getElementById('fborn').value
+			};
+			console.debug(JSON.stringify(person));
+			addPerson(person);
+			return false;
+		}
+	}
+</script>  
+
 
 </body>
 </html>

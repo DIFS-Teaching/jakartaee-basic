@@ -34,7 +34,7 @@ public class Person
     private String surname;
     @Temporal(TemporalType.DATE)
     private Date born;
-    @OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER, mappedBy = "owner", orphanRemoval = true)
+    @OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY, mappedBy = "owner", orphanRemoval = true)
 	private Collection<Car> cars;
 
     public Person()

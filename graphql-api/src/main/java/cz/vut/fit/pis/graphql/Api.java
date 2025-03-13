@@ -3,6 +3,8 @@
  */
 package cz.vut.fit.pis.graphql;
 
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 import org.eclipse.microprofile.graphql.Description;
@@ -36,63 +38,87 @@ public class Api
 
 	@Query
 	@Description("Gets the complete list of people")
-	public List<Person> getPeople()
+	public List<PersonDTO> getPeople()
 	{
-		return personMgr.findAll();
+    	return personMgr.findAll().stream().map(p -> new PersonDTO(p)).toList();
 	}
 	
 	@Query
 	@Description("Gets the complete list of cars")
-	public List<Car> getCars()
+	public List<CarDTO> getCars()
 	{
-		return carMgr.findAll();
+    	return carMgr.findAll().stream().map(car -> new CarDTO(car)).toList();
 	}
 	
 	@Query
 	@Description("Gets a person by their ID")
-	public Person getPersonById(long id)
+	public PersonDTO getPersonById(long id)
 	{
-		return personMgr.find(id);
+    	Person p = personMgr.find(id);
+    	return new PersonDTO(p);
+	}
+	
+	@Description("List of cars for a person")
+	public List<CarDTO> getCars(@Source PersonDTO src)
+	{
+		Person p = personMgr.find(src.getId());
+		return p.getCars().stream().map(car -> new CarDTO(car)).toList();
 	}
 	
 	@Description("The number of cars for a person")
-	public Integer getCarCount(@Source Person p)
+	public Integer getCarCount(@Source PersonDTO src)
 	{
+		Person p = personMgr.find(src.getId());
 		return p.getCars().size();
 	}
 	
 	@Mutation
 	@Description("Updates a person or creates a new one")
-	public Person updatePerson(Person p)
+	public PersonDTO updatePerson(PersonDTO src) throws GraphQLException
 	{
-		Person newPerson = personMgr.save(p);
-		return newPerson;
+    	Person p = personMgr.find(src.getId());
+    	if (p == null)
+    	{
+    		p = new Person();
+    		p.setId(src.getId());
+    	}
+    	p.setName(src.getName());
+		p.setSurname(src.getSurname());
+        p.setBorn(Date.from(src.getBorn().atStartOfDay()
+                .atZone(ZoneId.systemDefault())
+                .toInstant()));
+        personMgr.save(p);
+		return new PersonDTO(p);
 	}
 
 	@Mutation
 	@Description("Deletes a person")
-	public Person deletePerson(long id) throws GraphQLException
+	public PersonDTO deletePerson(long id) throws GraphQLException
 	{
 		Person p = personMgr.find(id);
 		if (p != null)
 			personMgr.remove(p);
 		else
 			throw new GraphQLException("No such person");
-		return p;
+		return new PersonDTO(p);
 	}
 
 	@Mutation
 	@Description("Adds a car to a person")
-	public Person addCar(long personId, Car car) throws GraphQLException
+	public PersonDTO addCar(long personId, CarDTO car) throws GraphQLException
 	{
 		Person p = personMgr.find(personId);
 		if (p != null)
 		{
-			personMgr.addCar(p, car);
+    	    Car newCar = new Car();
+    	    newCar.setReg(car.getReg());
+    	    newCar.setProd(car.getProd());
+    	    newCar.setType(car.getType());
+			personMgr.addCar(p, newCar);
 		}
 		else
 			throw new GraphQLException("No such person");
-		return p;
+		return new PersonDTO(p);
 	}
 
 }
